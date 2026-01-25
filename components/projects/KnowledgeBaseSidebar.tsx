@@ -282,16 +282,18 @@ export function KnowledgeBaseSidebar({
   const getPerformanceMetrics = () => {
     if (!projectSettings) return { totalChunks: 0, latency: 0 };
 
-    // Simple lookup table
-    const strategyConfig = {
-      basic: { latency: 400 },
-      hybrid: { latency: 600 },
-      "multi-query-vector": { latency: 800 },
-      "multi-query-hybrid": { latency: 1000 },
-    }[projectSettings.rag_strategy] || { latency: 400 };
+    // Simple lookup table (fixing type error with explicit type assertion)
+    const strategyConfig = (
+      {
+        basic: { latency: 400 },
+        hybrid: { latency: 600 },
+        "multi-query-vector": { latency: 800 },
+        "multi-query-hybrid": { latency: 1000 },
+      } as Record<string, { latency: number }>
+    )[projectSettings.rag_strategy] || { latency: 400 };
 
     // Calculate chunks
-    const isMultiQuery = projectSettings.rag_strategy.includes("multi-query");
+    const isMultiQuery = !!projectSettings.rag_strategy && projectSettings.rag_strategy.includes("multi-query");
     const totalChunks =
       projectSettings.chunks_per_search *
       (isMultiQuery ? projectSettings.number_of_queries : 1);

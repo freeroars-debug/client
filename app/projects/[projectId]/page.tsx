@@ -9,6 +9,7 @@ import { apiClient } from "@/lib/api";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { NotFound } from "@/components/ui/NotFound";
 import toast from "react-hot-toast";
+import { Project, Chat, ProjectDocument, ProjectSettings } from "@/lib/types";
 
 interface ProjectPageProps {
   params: Promise<{
@@ -17,10 +18,10 @@ interface ProjectPageProps {
 }
 
 interface ProjectData {
-    project: null;
-    chats: [];
-    documents: [];
-    settings: null;
+    project: Project | null;
+    chats: Chat[];
+    documents: ProjectDocument[];
+    settings: ProjectSettings | null;
   }
 
 function ProjectPage({ params }: ProjectPageProps) {
